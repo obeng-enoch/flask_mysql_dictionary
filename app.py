@@ -21,7 +21,10 @@ def index():
         cur = conn.cursor()
         cur.execute('SELECT meaning FROM word WHERE word = %s', (user_input))
         rv = cur.fetchall()
-        user_response = rv[0]['meaning']
+        if(len(rv) > 0):
+            user_response = rv[0]['meaning']
+        else:
+            user_response = 'The word cannot be found in this dicionary, please try again with another word.'
 
     return render_template('index.html', user_response=user_response)
 
