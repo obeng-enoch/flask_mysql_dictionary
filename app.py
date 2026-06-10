@@ -30,7 +30,14 @@ def index():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    conn = mysql.get_db()
+    cur = conn.cursor()
+    cur.execute('select * from word')
+    rv = cur.fetchall()
+    for item in rv:
+        print(item)
+
+    return render_template('dashboard.html', words=rv)
 
 if __name__ == '__main__':
     app.run(debug=True)

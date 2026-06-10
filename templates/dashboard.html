@@ -9,5 +9,35 @@ class="active"
 {% endblock %}
 
 {% block content %}
-<h1 style='color: red;'>This is the dashboard</h1>
+<div class="row">
+    <h2>Word Index</h2>
+    <div class = "col-md-2 sidenav">
+        <a href="#">All Words</a>
+        <a href="#">Add New</a>
+    </div>
+    <div class="col-md-10 main">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>SN</th>
+                    <th>Word</th>
+                    <th>Meaning</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for word in words %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ word['word'] }}</td>
+                    <td>{{ word['meaning'] }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">The dictionary has no words at the moment, please try again later.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

@@ -16,6 +16,8 @@ a.navbar-brand {
     letter-spacing: 2px;
 }
 
+/* Home Page */
+
 .container-fluid > .row {
   padding: 60px 50px 0 50px;
 }
@@ -61,6 +63,37 @@ textarea.form-control {
   background-color: #ffede5;
 }
 
+/* Dashboard */
+
+.row > h2 {
+  margin-top: -50px;
+  margin-left: 175px;
+  color: #34325e;
+  font-family: Georgia, serif;
+  font-weight: bold;
+}
+
+.sidenav {
+  height: 100%;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  border-right: solid black 5px;
+  overflow-x: hidden;
+}
+
+.sidenav > a{
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display:block;
+}
+
+.main {
+  overflow-y: scroll;
+  height: 70vh;
+  padding-left: 60px;
+}
 
 .footer {
   text-align: center;
