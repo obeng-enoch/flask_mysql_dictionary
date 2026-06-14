@@ -95,6 +95,14 @@ textarea.form-control {
   padding-left: 60px;
 }
 
+.side-active {
+  text-shadow: 2px 2px;
+}
+
+.sidenav > div {
+  margin-left: -15px;
+}
+
 .footer {
   text-align: center;
   position: absolute;
