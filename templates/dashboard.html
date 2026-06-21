@@ -23,7 +23,7 @@ class="active"
                         name="word"
                         id="word"
                         placeholder="Type in the word here:"
-                        required
+                    
                     >
                 </div>
                 <div class="form-group">
@@ -31,7 +31,7 @@ class="active"
                     <textarea
                         class="form-control"
                         id="meaning"
-                        placeholder="Type the meaning of the word here:" required>
+                        placeholder="Type the meaning of the word here:" >
                     </textarea>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit">Submit</button>
@@ -52,8 +52,16 @@ class="active"
                 {% for word in words %}
                 <tr>
                     <td>{{ loop.index }}</td>
-                    <td>{{ word['word'] }}</td>
-                    <td>{{ word['meaning'] }}</td>
+                    <td class="word-word">{{ word['word'] }}</td>
+                    <td class="word-meaning">{{ word['meaning'] }}</td>
+                    <form action="javascript:0" class="update-form">
+                        <td class="edit-word"><input type='text' value="{{ word['word'] }}" ></td>
+                        <td class="edit-meaning"><textarea > {{ word['meaning'] }} </textarea></td>
+                        <td><button class="btn btn-sm btn-primary btn-block submit" type="submit" data-id="{{ word ['id'] }}">Submit</button></td>
+                    </form>
+                    <td><button class="btn btn-sm btn-success btn-block edit" data-id="{{ word ['id'] }}">Edit</button></td>
+                    <td><button class="btn btn-sm btn-danger btn-block delete" data-id="{{ word ['id'] }}">Delete</button></td>
+                    <td><button class="btn btn-sm btn-warning btn-block cancel" data-id="{{ word ['id'] }}">Cancel</button></td>
                 </tr>
                 {% else %}
                 <tr>

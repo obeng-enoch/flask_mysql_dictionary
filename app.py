@@ -18,14 +18,17 @@ def index():
     user_response = ''
     if request.method == 'POST':
         user_input = request.form['word']
-        conn = mysql.get_db()
-        cur = conn.cursor()
-        cur.execute('SELECT meaning FROM word WHERE word = %s', (user_input))
-        rv = cur.fetchall()
-        if(len(rv) > 0):
-            user_response = rv[0]['meaning']
+        if user_input == '':
+            user_response = 'You did not enter a valid word, please try again.'
         else:
-            user_response = 'The word cannot be found in this dicionary, please try again with another word.'
+            conn = mysql.get_db()
+            cur = conn.cursor()
+            cur.execute('SELECT meaning FROM word WHERE word = %s', (user_input,))
+            rv = cur.fetchall()
+            if(len(rv) > 0):
+                user_response = rv[0]['meaning']
+            else:
+                user_response = 'The word cannot be found in this dicionary, please try again with another word.'
 
     return render_template('index.html', user_response=user_response)
 
@@ -51,6 +54,31 @@ def add_word():
     conn.commit()
     cur.close()
 
+    return json.dumps('success')
+
+@app.route('/word/<id>/delete', methods=['POST'])
+def delete_word(id):
+    word_id = id
+    conn = mysql.get_db()
+    cur = conn.cursor()
+    cur.execute('delete from word where id=%s', [word_id])
+    conn.commit()
+    cur.close()
+    
+    return json.dumps('success')
+
+@app.route('/word/<id>/edit', methods=['POST'])
+def edit_word(id):
+    word_id = id
+    req = request.get_json()
+    word = req['word']
+    meaning = req['meaning']
+    conn = mysql.get_db()
+    cur = conn.cursor()
+    cur.execute('update word set word=%s,  meaning=%s where id=%s', (word, meaning, word_id))
+    conn.commit()
+    cur.close()
+    
     return json.dumps('success')
 
 if __name__ == '__main__':

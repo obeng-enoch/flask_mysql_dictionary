@@ -1,19 +1,23 @@
-window.onload = function() {
+$(document).ready(function() {
     $('#word-form').hide();
+    $('.edit-word, .edit-meaning').hide();
+    $('.submit, .cancel').parent().hide();
 
-    $('#word-index').click(function() {
+    $('#word-index').on('click', function() {
         location.reload();
     });
 
-    $('#word-add').click(function() {
+    $('#word-add').on('click', function() {
         $('#word-index').removeClass('side-active');
         $(this).addClass('side-active');
         $('#word-form').show();
     });
 
-    $('#word-form').submit(function() {
-        let word = $('#word').val();
-        let meaning = $('#meaning').val();
+    $('#word-form').on('submit',function(event) {
+        event.preventDefault();
+        
+        const word = $('#word').val();
+        const meaning = $('#meaning').val();
 
         $.ajax({
             url: '/word',
@@ -24,7 +28,7 @@ window.onload = function() {
                 'meaning': meaning
             }),
             contentType:'application/json; charset=UTF-8',
-            success: function(data){
+            success: function() {
                 location.reload();
             },
             error: function(err) {
@@ -35,5 +39,58 @@ window.onload = function() {
     
     $('#cancel').click(function() {
         location.reload();
+    })
+
+    // Delete Operation
+    $(document).on('click', '.delete', function() {
+        const word_id = $(this).data('id');
+
+        $.ajax({
+            url: '/word/' + word_id + '/delete',
+            type: 'POST',
+            success: function() {
+                location.reload();
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
     });
-}
+
+// Update Operation
+    $('.edit').click(function() {
+        let parent = $(this).parents('tr');
+        parent.find('.edit-word, .edit-meaning').show();
+        parent.find('.word-word, .word-meaning').hide();
+        parent.find('.submit, .cancel').parent().show();
+        parent.find('.edit, .delete').parent().hide();
+    });
+
+    $('.cancel').click(function() {
+        location.reload();
+    })
+
+    $('.update-form').submit(function() {
+        let parent = $(this).parents('tr');
+        let word = parent.find('input').val();
+        let meaning = parent.find('textarea').val();
+        let word_id = parent.find('.submit').data('id');
+
+        $.ajax({
+            url: '/word/' + word_id + '/edit',
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify({
+                'word': word,
+                'meaning': meaning
+            }),
+            contentType: 'application/json; charset=UTF-8',
+            success: function() {
+                location.reload();
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    })
+});
