@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, flash
 from flaskext.mysql import MySQL
 import datetime
 import pymysql.cursors
@@ -6,6 +6,7 @@ import json
 
 app = Flask(__name__)
 
+app.secret_key = 'secret'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 app.config['MYSQL_DATABASE_DB'] = 'dictionary'
 app.config['MYSQL_DATABASE_USER'] = 'obeng-mensah'
@@ -19,7 +20,7 @@ def index():
     if request.method == 'POST':
         user_input = request.form['word']
         if user_input == '':
-            user_response = 'You did not enter a valid word, please try again.'
+            flash('You did not enter a valid word, please try again.', 'flash_error')
         else:
             conn = mysql.get_db()
             cur = conn.cursor()
@@ -48,11 +49,15 @@ def add_word():
     req = request.get_json()
     word = req['word']
     meaning = req['meaning']
-    conn = mysql.get_db()
-    cur = conn.cursor()
-    cur.execute('insert into word(word, meaning) VALUES (%s, %s)', (word, meaning))
-    conn.commit()
-    cur.close()
+    if word.strip() == '' or meaning.strip() == '' :
+        flash('Please fill in all fields, to add a new word', 'flash_error')
+    else :    
+        conn = mysql.get_db()
+        cur = conn.cursor()
+        cur.execute('insert into word(word, meaning) VALUES (%s, %s)', (word, meaning))
+        conn.commit()
+        cur.close()
+        flash('Word successfully added!', 'flash_success')
 
     return json.dumps('success')
 
@@ -64,6 +69,7 @@ def delete_word(id):
     cur.execute('delete from word where id=%s', [word_id])
     conn.commit()
     cur.close()
+    flash('Word successfully deleted!', 'flash_success')
     
     return json.dumps('success')
 
@@ -73,11 +79,15 @@ def edit_word(id):
     req = request.get_json()
     word = req['word']
     meaning = req['meaning']
-    conn = mysql.get_db()
-    cur = conn.cursor()
-    cur.execute('update word set word=%s,  meaning=%s where id=%s', (word, meaning, word_id))
-    conn.commit()
-    cur.close()
+    if word.strip() == '' or meaning.strip() == '' :
+        flash('Please fill in all fields, to update a word', 'flash_error')
+    else:
+        conn = mysql.get_db()
+        cur = conn.cursor()
+        cur.execute('update word set word=%s,  meaning=%s where id=%s', (word, meaning, word_id))
+        conn.commit()
+        cur.close()
+        flash('Word successfully updated!', 'flash_success')
     
     return json.dumps('success')
 

@@ -16,6 +16,14 @@ a.navbar-brand {
     letter-spacing: 2px;
 }
 
+.flash_success {
+  color: rgb(15, 206, 15);
+}
+
+.flash_error {
+  color: red;
+}
+
 /* Home Page */
 
 .container-fluid > .row {

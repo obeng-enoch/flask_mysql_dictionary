@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    $('#myModal').modal('show');
     $('#word-form').hide();
     $('.edit-word, .edit-meaning').hide();
     $('.submit, .cancel').parent().hide();
