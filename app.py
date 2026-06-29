@@ -1,8 +1,9 @@
-from flask import Flask, render_template, url_for, request, flash
+from flask import Flask, render_template, url_for, request, flash, current_app
 from flaskext.mysql import MySQL
 import datetime
 import pymysql.cursors
 import json
+import os
 
 app = Flask(__name__)
 
@@ -90,6 +91,20 @@ def edit_word(id):
         flash('Word successfully updated!', 'flash_success')
     
     return json.dumps('success')
+
+
+@app.route('/add_logo', methods=['POST'])
+def add_logo():
+    image = request.files['file']
+    
+    if image :
+        filepath = os.path.join(current_app.root_path, 'static/images/logo.png')
+        image.save(filepath)
+        flash('Success!')
+    else :
+        flash('Error')
+    
+    return 'success'
 
 if __name__ == '__main__':
     app.run(debug=True)

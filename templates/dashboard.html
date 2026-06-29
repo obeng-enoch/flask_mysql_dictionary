@@ -25,6 +25,7 @@ class="active"
                         placeholder="Type in the word here:"
                     >
                 </div>
+
                 <div class="form-group">
                     <label for="meaning">Meaning:</label>
                     <textarea
@@ -35,6 +36,25 @@ class="active"
                 </div>
                 <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit">Submit</button>
                 <button type="button" class="btn btn-warning btn-block btn-lg" id="cancel">Cancel</button>
+            </form>
+        </div>
+        <a href="#" id="logo-add">Add Logo</a>
+        <div>
+            <form action="javascript:0" id="logo-form" method="POST" enctype="multipart/form-data"> 
+                <div class="form-group">
+                    <label for="logo">Upload:</label>
+                    <input
+                        type="file"
+                        class="form-control"
+                        name="logo"
+                        id="logo"
+                        accept="image/*"
+                        required
+                    >
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit">Submit</button>
+                <button type="button" class="btn btn-warning btn-block btn-lg" id="logo-cancel">Cancel</button>
+            </form>
             </form>
         </div>
     </div>

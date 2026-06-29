@@ -1,6 +1,7 @@
 $(document).ready(function() {
     $('#myModal').modal('show');
     $('#word-form').hide();
+    $('#logo-form').hide();
     $('.edit-word, .edit-meaning').hide();
     $('.submit, .cancel').parent().hide();
 
@@ -8,10 +9,12 @@ $(document).ready(function() {
         location.reload();
     });
 
+    // Create Operation
     $('#word-add').on('click', function() {
-        $('#word-index').removeClass('side-active');
+        $('#word-index, #logo-add').removeClass('side-active');
         $(this).addClass('side-active');
         $('#word-form').show();
+        $('#logo-form').hide();
     });
 
     $('#word-form').on('submit',function(event) {
@@ -37,10 +40,45 @@ $(document).ready(function() {
             }
         });
     });
-    
-    $('#cancel').click(function() {
+
+     $('#cancel').click(function() {
         location.reload();
     })
+    
+    // logo Operation
+
+    $('#logo-add').on('click', function() {
+        $('#word-index, #word-add').removeClass('side-active');
+        $(this).addClass('side-active');
+        $('#word-form').hide();
+        $('#logo-form').show();
+    });
+
+     $('#logo-cancel').click(function() {
+        location.reload();
+    });
+
+    $('#logo-form').on('submit',function(event) {
+        event.preventDefault();
+        let data =new FormData();
+        data.append('file', $('#logo')[0].files[0]);
+
+        $.ajax({
+            url: '/add_logo',
+            type: 'POST',
+            data: data,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                location.reload();
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    });
+
 
     // Delete Operation
     $(document).on('click', '.delete', function() {
@@ -58,7 +96,7 @@ $(document).ready(function() {
         });
     });
 
-// Update Operation
+    // Update Operation
     $('.edit').click(function() {
         let parent = $(this).parents('tr');
         parent.find('.edit-word, .edit-meaning').show();
